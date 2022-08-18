@@ -12,9 +12,9 @@ public interface UserService {
 	
 	public User insertuser(User user) throws UnableToGenerateIdException, EntryAlreadyExistException;
 	public Optional<List<User>> getAllUsers();
-	public Optional<User> getUserByUserId(int userId);
+	public Optional<User> getUserByUserId(String userId);
 	public Optional<User[]> findByOrderByUserNameDsc();
-	public String deleteUser(int uid) throws NoDataFoundException;
-	public Optional<User> updateUser(int id, User user) throws NoDataFoundException;
+	public String deleteUser(String uid) throws NoDataFoundException;
+	public Optional<User> updateUser(String id, User user) throws NoDataFoundException;
 	
 }

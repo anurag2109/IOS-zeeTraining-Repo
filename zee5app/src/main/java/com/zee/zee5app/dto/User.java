@@ -1,24 +1,22 @@
 package com.zee.zee5app.dto;
 
 import java.time.LocalDate;
-import java.util.Objects;
 
-import javax.annotation.Generated;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
 
-import lombok.AccessLevel;
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import lombok.AllArgsConstructor;
 import lombok.Data;
-import lombok.Getter;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
-import lombok.ToString;
 
 
 @AllArgsConstructor
@@ -27,26 +25,28 @@ import lombok.ToString;
 @Entity
 //@Table(name = "user_table")
 public class User{
-	public User( boolean active,LocalDate dob, LocalDate doj, String email,String firstname, String lastname, String password, String userName) {
-		
-		this.active = active;
-		this.dob = dob;
-		this.doj = doj;
-		this.email = email;
-		this.firstName = firstname;
-		this.lastName = lastname;
-	}
 	@Id
 	@GenericGenerator(name="userIdGenerator", strategy = "com.zee.zee5app.utils.UserIdGenerator")
 	@GeneratedValue(generator = "userIdGenerator")
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+//	@GeneratedValue(strategy = GenerationType.AUTO)  
 	private String userId;
+	@NotNull
 	private String firstName;
+	@NotNull
 	private String lastName;
+	@NotNull
 	private String username;
+	@NotNull
+	@Size(min = 3, max = 10)
 	private String password;
+	@Email
+	@Size(max = 50)
 	private String email;
+	@Column(columnDefinition = "DATE")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate doj;
+	@Column(columnDefinition = "DATE")
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dob;	
 	private boolean active;
 	

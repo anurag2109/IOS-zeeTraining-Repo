@@ -31,7 +31,7 @@ public class UserServiceImpl implements UserService {
 	
 	// delete user
 	@Override
-	public String deleteUser(int uid) throws NoDataFoundException {
+	public String deleteUser(String uid) throws NoDataFoundException {
 		try {
 			if(repo.existsById(uid)) {			
 				repo.deleteById(uid);
@@ -48,7 +48,7 @@ public class UserServiceImpl implements UserService {
 	
 	// update user
 	@Override
-	public Optional<User> updateUser(int id, User user) throws NoDataFoundException {
+	public Optional<User> updateUser(String id, User user) throws NoDataFoundException {
 		return Optional.ofNullable(repo.save(user));
 	}
 	
@@ -60,7 +60,7 @@ public class UserServiceImpl implements UserService {
 	
 	// get specific user
 	@Override
-	public Optional<User> getUserByUserId(int userId) {
+	public Optional<User> getUserByUserId(String userId) {
 		return repo.findById(userId);
 	}
 
