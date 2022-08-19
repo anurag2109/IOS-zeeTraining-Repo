@@ -23,38 +23,34 @@ import com.zee.zee5app.service.UserServiceImpl;
 @RestController
 @RequestMapping("/api/user")
 public class UserController {
+	
 	@Autowired
 	UserServiceImpl userServiceImpl;
-	
-	@PostMapping("/add")    // It is a combination of post method and request mapping
-	public ResponseEntity<?> createUser(@RequestBody User user) {
-		try {
-			User user2 = userServiceImpl.insertuser(user);
-			return ResponseEntity.status(HttpStatus.CREATED).body(user2);
-		} catch (UnableToGenerateIdException e) {
-			e.printStackTrace();
-		} catch (EntryAlreadyExistException e) {
-			e.printStackTrace();
-		}
-		return null;
+
+	@PostMapping("/add") // It is a combination of post method and request mapping
+	public ResponseEntity<?> createUser(@RequestBody User user)
+			throws UnableToGenerateIdException, EntryAlreadyExistException {
+
+		User user2 = userServiceImpl.insertuser(user);
+		return ResponseEntity.status(HttpStatus.CREATED).body(user2);
 	}
-	
+
 	@DeleteMapping("/{id}")
 	public String deleteUser(@PathVariable("id") String id) {
 		try {
 			userServiceImpl.deleteUser(id);
-			return "delete success: "+id;
+			return "delete success: " + id;
 		} catch (NoDataFoundException e) {
 			e.printStackTrace();
 		}
 		return "failed to delete";
 	}
-	
+
 	@GetMapping("/{id}")
 	public Optional<User> getUserById(@PathVariable("id") String userid) {
 		return userServiceImpl.getUserByUserId(userid);
 	}
-	
+
 	@PutMapping()
 	public String updateUserByUserId(String userid) {
 		return "update success";
