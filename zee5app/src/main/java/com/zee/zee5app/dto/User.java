@@ -1,16 +1,25 @@
 package com.zee.zee5app.dto;
 
 import java.time.LocalDate;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.GenericGenerator;
+import org.hibernate.validator.constraints.UniqueElements;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
@@ -23,7 +32,9 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @Data
 @Entity
-//@Table(name = "user_table")
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = "email"),
+		@UniqueConstraint(columnNames = "username")
+})
 public class User{
 	@Id
 	@GenericGenerator(name="userIdGenerator", strategy = "com.zee.zee5app.utils.UserIdGenerator")
@@ -49,5 +60,11 @@ public class User{
 	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "dd-MM-yyyy")
 	private LocalDate dob;	
 	private boolean active;
+	
+	@ManyToMany(fetch = FetchType.LAZY)
+	// 3rd table
+	@JoinTable(name="user_role", joinColumns = @JoinColumn(name="userId"),
+	inverseJoinColumns = @JoinColumn(name="roleId"))	
+	private Set<Role> roles = new HashSet<>();
 	
 }

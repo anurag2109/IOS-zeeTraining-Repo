@@ -32,5 +32,4 @@ public class Role {
 	@Column(length = 30)
 	private EROLE roleName;
 	
-	
 }
