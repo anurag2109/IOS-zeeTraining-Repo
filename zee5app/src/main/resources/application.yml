@@ -5,7 +5,7 @@ spring:
     password: Pass@123
   jpa:
     hibernate:
-      ddl-auto: create
+      ddl-auto: update
       naming:
         physical-strategy: com.zee.zee5app.utils.CustomTableNameStrategy
     show-sql: true

@@ -2,6 +2,8 @@ package com.zee.zee5app.restcontroller;
 
 import java.util.Optional;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -27,8 +29,8 @@ public class UserController {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 
-	@PostMapping("/add") // It is a combination of post method and request mapping
-	public ResponseEntity<?> createUser(@RequestBody User user)
+	@PostMapping("/signup") // It is a combination of post method and request mapping
+	public ResponseEntity<?> createUser(@Valid @RequestBody User user)
 			throws UnableToGenerateIdException, EntryAlreadyExistException {
 
 		User user2 = userServiceImpl.insertuser(user);
