@@ -23,16 +23,18 @@ import com.zee.zee5app.exceptions.UnableToGenerateIdException;
 import com.zee.zee5app.service.UserServiceImpl;
 
 @RestController
-@RequestMapping("/api/user")
+@RequestMapping("/api/auth")
 public class UserController {
 	
 	@Autowired
 	UserServiceImpl userServiceImpl;
+	
 
 	@PostMapping("/signup") // It is a combination of post method and request mapping
 	public ResponseEntity<?> createUser(@Valid @RequestBody User user)
 			throws UnableToGenerateIdException, EntryAlreadyExistException {
 
+		
 		User user2 = userServiceImpl.insertuser(user);
 		return ResponseEntity.status(HttpStatus.CREATED).body(user2);
 	}
