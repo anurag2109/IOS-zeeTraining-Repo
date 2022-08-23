@@ -21,6 +21,9 @@ import lombok.Data;
 @Data
 public class ApiError {
 	// should provide collective info regarding error/errors
+	// API validation method which is accepting list of field error
+	// addValidationError
+	// addSubError
 	
 	private HttpStatus httpStatus;
 	

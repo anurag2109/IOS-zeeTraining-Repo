@@ -2,6 +2,7 @@ package com.zee.zee5app.dto;
 
 import java.sql.Blob;
 import java.time.LocalDate;
+import java.time.LocalTime;
 
 import javax.naming.InvalidNameException;
 import javax.persistence.Column;
@@ -15,6 +16,7 @@ import javax.persistence.Table;
 
 import org.hibernate.annotations.GenericGenerator;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import com.zee.zee5app.enums.Geners;
 import com.zee.zee5app.enums.Languages;
 import com.zee.zee5app.exceptions.InvalidIdException;
@@ -33,18 +35,18 @@ import lombok.ToString;
 @Entity
 //@Table(name = "movie_table")
 public class Movie {
-	public Movie(String actors, String director , String genre, String languages, float movieLength, String movieName, String production,
-			String trailer1) {
-		this.actors = actors;
-		this.director = director;
-		this.genre = genre;
-		this.languages = languages;
-		this.movieLength = movieLength;
-		this.movieName = movieName;
-		this.production = production;
-		this.trailer1 = trailer1;
-		
-	}
+//	public Movie(String actors, String director , String genre, String languages, LocalTime movieLength, String movieName, String production,
+//			String trailer1) {
+//		this.actors = actors;
+//		this.director = director;
+//		this.genre = genre;
+//		this.languages = languages;
+//		this.movieLength = movieLength;
+//		this.movieName = movieName;
+//		this.production = production;
+//		this.trailer1 = trailer1;
+//		
+//	}
 	@Id
 	@GenericGenerator(name="movieIdGenerator", strategy = "com.zee.zee5app.utils.MovieIdGenerator")
 	@GeneratedValue(generator = "movieIdGenerator")
@@ -56,6 +58,7 @@ public class Movie {
     private String genre;
     private String production;
 	private String languages;
-    private float movieLength;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "HH:mm:ss")
+    private LocalTime movieLength;
     private String trailer1;
 }
