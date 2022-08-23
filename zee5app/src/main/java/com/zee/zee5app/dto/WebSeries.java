@@ -7,6 +7,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.hibernate.annotations.GenericGenerator;
+
 import com.zee.zee5app.enums.Geners;
 import com.zee.zee5app.enums.Languages;
 import com.zee.zee5app.exceptions.InvalidIdException;
@@ -24,14 +26,15 @@ import lombok.ToString;
 //@Table(name = "webseries")
 public class WebSeries {
 	@Id
-//	@GeneratedValue(strategy = GenerationType.AUTO)
+	@GenericGenerator(name="webSeriesIdGenerator", strategy = "com.zee.zee5app.utils.WebSeriesIdGenerator")
+	@GeneratedValue(generator = "webSeriesIdGenerator")
 	private String webSeriesId;
-    private String actors[];
+    private String actors;
     private String webSeriesName;
     private String director;
-    private Geners genre;
+    private String genre;
     private String production;
-	private String languages[];
+	private String languages;
     private int episodes;
     private String trailer1;
 }

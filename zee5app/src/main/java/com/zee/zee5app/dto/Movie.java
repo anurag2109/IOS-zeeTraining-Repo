@@ -33,7 +33,7 @@ import lombok.ToString;
 @Entity
 //@Table(name = "movie_table")
 public class Movie {
-	public Movie(String actors, String director , Geners genre, String languages, float movieLength, String movieName, String production,
+	public Movie(String actors, String director , String genre, String languages, float movieLength, String movieName, String production,
 			String trailer1) {
 		this.actors = actors;
 		this.director = director;
@@ -53,7 +53,7 @@ public class Movie {
     private String actors;
     private String movieName;
     private String director;
-    private Geners genre;
+    private String genre;
     private String production;
 	private String languages;
     private float movieLength;

@@ -20,7 +20,7 @@ public class MovieServiceImpl implements MovieService {
 
 	@Autowired
 	private MovieRepository movieRepository; // Interface ref = class object()
-	
+
 	@Override
 	public Movie insertMovie(Movie movie) throws UnableToGenerateIdException, FileNotFoundException {
 		// TODO Auto-generated method stub
@@ -45,18 +45,30 @@ public class MovieServiceImpl implements MovieService {
 	}
 
 	@Override
-	public Optional<List<Movie>> getAllMoviesByGenre(String genre) throws InvalidNameException, InvalidIdException, NoDataFoundException {
+	public Optional<List<Movie>> getAllMoviesByGenre(String genre)
+			throws InvalidNameException, InvalidIdException, NoDataFoundException {
 		return Optional.ofNullable(movieRepository.findAllByGenre(genre));
 	}
 
 	@Override
-	public Optional<List<Movie>> getAllMoviesByName(String movieName) throws InvalidNameException, InvalidIdException, NoDataFoundException {
+	public Optional<List<Movie>> getAllMoviesByName(String movieName)
+			throws InvalidNameException, InvalidIdException, NoDataFoundException {
 		return Optional.ofNullable(movieRepository.findAllByMovieName(movieName));
 	}
 
 	@Override
 	public String deleteMovieByMovieId(String movieId) throws NoDataFoundException {
-		return null;
+		try {
+			if (movieRepository.existsById(movieId)) {
+				movieRepository.deleteById(movieId);
+				return "success";
+			} else {
+				throw new NoDataFoundException("No movie find with this ID.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "failed";
 	}
 
 	@Override

@@ -29,38 +29,44 @@ public class WebSeriesServiceImpl implements WebSeriesService {
 
 	@Override
 	public Optional<WebSeries> updateWebSeries(String webSeriesId, WebSeries webSeries) throws NoDataFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return Optional.ofNullable(webSeriesRepository.save(webSeries));
 	}
 
 	@Override
 	public Optional<WebSeries> getWebSeriesByWebSeriesId(String webSeriesId) throws InvalidNameException, InvalidIdException {
-		// TODO Auto-generated method stub
-		return null;
+		return webSeriesRepository.findById(webSeriesId);
 	}
 
 	@Override
 	public Optional<List<WebSeries>> getAllWebSeriess() throws InvalidNameException, InvalidIdException {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(webSeriesRepository.findAll());
 	}
 
 	@Override
 	public Optional<List<WebSeries>> getAllWebSeriessByGenre(String genre) throws InvalidNameException, InvalidIdException, NoDataFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		
+		return Optional.ofNullable(webSeriesRepository.findAllByGenre(genre));
 	}
 
 	@Override
 	public Optional<List<WebSeries>> getAllWebSeriessByName(String webSeriesName) throws InvalidNameException, InvalidIdException, NoDataFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		return Optional.ofNullable(webSeriesRepository.findAllByWebSeriesName(webSeriesName));
 	}
 
 	@Override
 	public String deleteWebSeriesByWebSeriesId(String webSeriesId) throws NoDataFoundException {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			if (webSeriesRepository.existsById(webSeriesId)) {
+				webSeriesRepository.deleteById(webSeriesId);
+				return "success";
+			} else {
+				throw new NoDataFoundException("No webseries find with this ID.");
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		return "failed";
 	}
 
 	@Override

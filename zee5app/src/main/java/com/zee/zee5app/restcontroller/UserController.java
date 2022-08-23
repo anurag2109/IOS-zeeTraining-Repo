@@ -1,11 +1,13 @@
 package com.zee.zee5app.restcontroller;
 
+import java.time.LocalDate;
+import java.util.HashSet;
 import java.util.Optional;
+import java.util.Set;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -16,10 +18,14 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.zee.zee5app.dto.Role;
 import com.zee.zee5app.dto.User;
+import com.zee.zee5app.enums.EROLE;
 import com.zee.zee5app.exceptions.EntryAlreadyExistException;
 import com.zee.zee5app.exceptions.NoDataFoundException;
 import com.zee.zee5app.exceptions.UnableToGenerateIdException;
+import com.zee.zee5app.payload.request.SignupRequest;
+import com.zee.zee5app.repo.RoleRepository;
 import com.zee.zee5app.service.UserServiceImpl;
 
 @RestController
@@ -29,14 +35,56 @@ public class UserController {
 	@Autowired
 	UserServiceImpl userServiceImpl;
 	
+	@Autowired
+	RoleRepository roleRepository;
+	
 
 	@PostMapping("/signup") // It is a combination of post method and request mapping
-	public ResponseEntity<?> createUser(@Valid @RequestBody User user)
+	public ResponseEntity<?> createUser(@Valid @RequestBody SignupRequest signupRequest)
 			throws UnableToGenerateIdException, EntryAlreadyExistException {
 
 		
-		User user2 = userServiceImpl.insertuser(user);
-		return ResponseEntity.status(HttpStatus.CREATED).body(user2);
+//		User user2 = userServiceImpl.insertuser(user);
+//		return ResponseEntity.status(HttpStatus.CREATED).body(user2);
+		
+		Set<String> strRoles = signupRequest.getRole();
+		Set<Role> roles = new HashSet<>();
+		if(strRoles == null) {
+			Role userRoll = roleRepository.findByRoleName(EROLE.ROLE_USER)  // findByRoleName is defined in roleRepository
+					.orElseThrow(()->new RuntimeException("Error: role not found")); // orElseThrow method defined in Optional class
+			roles.add(userRoll);
+		}else {
+			strRoles.forEach(e->{
+				switch (e) {
+				case "admin":
+					System.out.println(e);
+					Role adminRoll = roleRepository.findByRoleName(EROLE.ROLE_ADMIN)  // findByRoleName is defined in roleRepository
+									.orElseThrow(()->new RuntimeException("Error: admin role not found")); // orElseThrow method defined in Optional class
+					roles.add(adminRoll);
+					break;
+					
+				case "moderator":
+					Role modRoll = roleRepository.findByRoleName(EROLE.ROLE_MOD)  // findByRoleName is defined in roleRepository
+									.orElseThrow(()->new RuntimeException("Error: moderator role not found")); // orElseThrow method defined in Optional class
+					roles.add(modRoll);
+					break;
+
+				default:
+					Role userRoll = roleRepository.findByRoleName(EROLE.ROLE_USER)  // findByRoleName is defined in roleRepository
+					.orElseThrow(()->new RuntimeException("Error: user role not found")); // orElseThrow method defined in Optional class
+					roles.add(userRoll);
+					break;
+				}
+			});
+		}
+		
+		User user = new User(null,signupRequest.getFirstName(),signupRequest.getLastName(),signupRequest.getUsername(), signupRequest.getPassword(),
+				signupRequest.getEmail(), LocalDate.now(), signupRequest.getDob(), true, roles);
+		userServiceImpl.insertuser(user);
+		System.out.println(user);
+		
+		
+		return ResponseEntity.status(201).body("msg: successfully created");
 	}
 
 	@DeleteMapping("/{id}")
