@@ -9,3 +9,10 @@ spring:
       naming:
         physical-strategy: com.zee.zee5app.utils.CustomTableNameStrategy
     show-sql: true
+server:
+  port: 9005
+
+zee5app:
+  app:
+    jwtSecret: secretkey
+    jwtExpirationMs: 86400000
